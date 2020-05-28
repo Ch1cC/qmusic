@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
+	"os"
 )
 
-func Out2txt(arr string, filename string) {
-	url := "https://api.qq.jsososo.com/song/urls?id=" + arr
+func Out2txt(id string, filename string) {
+	url := "http://localhost:3300/song/url?type=320&id=" + id
 	request, _ := http.NewRequest("GET", url, nil)
 	request.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
 	response, _ := http.DefaultClient.Do(request)
@@ -18,14 +18,13 @@ func Out2txt(arr string, filename string) {
 	//json str 转map
 	m := make(map[string]interface{})
 	if err := json.Unmarshal([]byte(all), &m); err == nil {
-		m2 := m["data"].(map[string]interface{})
-		durl := []string{}
-		for _, s2 := range m2 {
-			durl = append(durl, s2.(string))
+		m2 := m["data"]
+		fl, err := os.OpenFile(filename+".txt", os.O_APPEND|os.O_CREATE, 0644)
+		if err != nil {
+			return
 		}
-		join := strings.Join(durl, "\n")
-		if ioutil.WriteFile(filename+".txt", []byte(join), 0644) == nil {
-			fmt.Println("写入文件成功")
-		}
+		defer fl.Close()
+		fl.Write([]byte(m2.(string) + "\n"))
+		fmt.Println("追加文件成功")
 	}
 }
