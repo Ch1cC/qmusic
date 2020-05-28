@@ -1,3 +1,3 @@
-module getmusicadd
+module goqmusic
 
 go 1.14
