@@ -19,6 +19,7 @@ func Out2txt(id string, filename string) {
 	m := make(map[string]interface{})
 	if err := json.Unmarshal([]byte(all), &m); err == nil {
 		m2 := m["data"]
+		fmt.Println(m2)
 		fl, err := os.OpenFile(filename+".txt", os.O_APPEND|os.O_CREATE, 0644)
 		if err != nil {
 			return
