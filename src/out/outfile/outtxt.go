@@ -9,7 +9,7 @@ import (
 )
 
 func Out2txt(id string, filename string) {
-	url := "http://localhost:3300/song/url?type=320&id=" + id
+	url := "https://api.qq.jsososo.com/song/url?type=320&id=" + id
 	request, _ := http.NewRequest("GET", url, nil)
 	request.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
 	response, _ := http.DefaultClient.Do(request)
